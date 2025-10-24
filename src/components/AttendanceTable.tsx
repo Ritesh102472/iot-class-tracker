@@ -9,6 +9,19 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Clock } from "lucide-react";
 
+/**
+ * AttendanceTable Component
+ * 
+ * This component displays attendance records.
+ * Currently using mock data for demonstration purposes.
+ * 
+ * IoT Integration:
+ * - This component is designed to receive real-time data from IoT devices (RFID/NFC readers)
+ * - The data structure matches the expected format from iotDataService.ts
+ * - Once your IoT project is built, replace mockData with live data from the IoT service
+ * - See src/services/iotDataService.ts for IoT data integration guide
+ */
+
 interface AttendanceRecord {
   id: string;
   studentName: string;
@@ -18,12 +31,13 @@ interface AttendanceRecord {
   course: string;
 }
 
+// Mock data - Replace with live IoT data when devices are connected
 const mockData: AttendanceRecord[] = [
-  { id: "1", studentName: "Alice Johnson", date: "2025-01-15", time: "09:00 AM", status: "present", course: "Computer Science" },
-  { id: "2", studentName: "Bob Smith", date: "2025-01-15", time: "09:05 AM", status: "late", course: "Computer Science" },
-  { id: "3", studentName: "Carol White", date: "2025-01-15", time: "-", status: "absent", course: "Computer Science" },
-  { id: "4", studentName: "David Brown", date: "2025-01-15", time: "08:58 AM", status: "present", course: "Computer Science" },
-  { id: "5", studentName: "Emma Davis", date: "2025-01-15", time: "09:02 AM", status: "present", course: "Computer Science" },
+  { id: "1", studentName: "Aarav Sharma", date: "2025-01-15", time: "09:00 AM", status: "present", course: "Computer Science" },
+  { id: "2", studentName: "Priya Patel", date: "2025-01-15", time: "09:05 AM", status: "late", course: "Computer Science" },
+  { id: "3", studentName: "Rahul Kumar", date: "2025-01-15", time: "-", status: "absent", course: "Computer Science" },
+  { id: "4", studentName: "Ananya Singh", date: "2025-01-15", time: "08:58 AM", status: "present", course: "Computer Science" },
+  { id: "5", studentName: "Arjun Reddy", date: "2025-01-15", time: "09:02 AM", status: "present", course: "Computer Science" },
 ];
 
 const AttendanceTable = () => {

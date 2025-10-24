@@ -12,6 +12,8 @@ import { toast } from "sonner";
 const Auth = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [loginRole, setLoginRole] = useState("student");
+  const [signupRole, setSignupRole] = useState("student");
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,8 +22,7 @@ const Auth = () => {
     // Simulate login
     setTimeout(() => {
       toast.success("Login successful!");
-      const role = (e.currentTarget.elements.namedItem("role") as HTMLSelectElement)?.value || "student";
-      navigate(`/${role}`);
+      navigate(`/${loginRole}`);
       setIsLoading(false);
     }, 1000);
   };
@@ -78,7 +79,7 @@ const Auth = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="role">Login As</Label>
-                <Select name="role" defaultValue="student">
+                <Select value={loginRole} onValueChange={setLoginRole}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
@@ -126,7 +127,7 @@ const Auth = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-role">Register As</Label>
-                <Select name="signup-role" defaultValue="student">
+                <Select value={signupRole} onValueChange={setSignupRole}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>

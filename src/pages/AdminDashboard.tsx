@@ -99,7 +99,7 @@ const AdminDashboard = () => {
                   <TableBody>
                     <TableRow>
                       <TableCell>STU001</TableCell>
-                      <TableCell className="font-medium">Alice Johnson</TableCell>
+                      <TableCell className="font-medium">Aarav Sharma</TableCell>
                       <TableCell>Computer Science</TableCell>
                       <TableCell>92%</TableCell>
                       <TableCell>
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
                     </TableRow>
                     <TableRow>
                       <TableCell>STU002</TableCell>
-                      <TableCell className="font-medium">Bob Smith</TableCell>
+                      <TableCell className="font-medium">Priya Patel</TableCell>
                       <TableCell>Mathematics</TableCell>
                       <TableCell>85%</TableCell>
                       <TableCell>
@@ -123,7 +123,7 @@ const AdminDashboard = () => {
                     </TableRow>
                     <TableRow>
                       <TableCell>STU003</TableCell>
-                      <TableCell className="font-medium">Carol White</TableCell>
+                      <TableCell className="font-medium">Ananya Singh</TableCell>
                       <TableCell>Physics</TableCell>
                       <TableCell>78%</TableCell>
                       <TableCell>
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
                   <TableBody>
                     <TableRow>
                       <TableCell>TCH001</TableCell>
-                      <TableCell className="font-medium">Prof. Michael Roberts</TableCell>
+                      <TableCell className="font-medium">Prof. Rajesh Kumar</TableCell>
                       <TableCell>Computer Science</TableCell>
                       <TableCell>4</TableCell>
                       <TableCell>
@@ -166,7 +166,7 @@ const AdminDashboard = () => {
                     </TableRow>
                     <TableRow>
                       <TableCell>TCH002</TableCell>
-                      <TableCell className="font-medium">Dr. Sarah Johnson</TableCell>
+                      <TableCell className="font-medium">Dr. Meera Desai</TableCell>
                       <TableCell>Mathematics</TableCell>
                       <TableCell>3</TableCell>
                       <TableCell>
@@ -200,7 +200,7 @@ const AdminDashboard = () => {
                       <TableCell className="font-medium">Computer Science 101</TableCell>
                       <TableCell>Computer Science</TableCell>
                       <TableCell>45</TableCell>
-                      <TableCell>Prof. Michael Roberts</TableCell>
+                      <TableCell>Prof. Rajesh Kumar</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm">View</Button>
                       </TableCell>
@@ -210,7 +210,7 @@ const AdminDashboard = () => {
                       <TableCell className="font-medium">Advanced Calculus</TableCell>
                       <TableCell>Mathematics</TableCell>
                       <TableCell>38</TableCell>
-                      <TableCell>Dr. Sarah Johnson</TableCell>
+                      <TableCell>Dr. Meera Desai</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm">View</Button>
                       </TableCell>

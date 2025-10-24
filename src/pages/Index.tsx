@@ -39,9 +39,6 @@ const Index = () => {
               <Button asChild variant="hero" size="lg">
                 <Link to="/auth">Get Started</Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link to="/features">Learn More</Link>
-              </Button>
             </div>
           </div>
         </div>
@@ -64,7 +61,7 @@ const Index = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">IoT Integration</h3>
               <p className="text-muted-foreground">
-                Automated attendance tracking using RFID, NFC, and facial recognition technologies for seamless check-ins.
+                Automated attendance tracking using RFID and NFC technologies for seamless and proxy-proof check-ins.
               </p>
             </Card>
 
@@ -135,7 +132,7 @@ const Index = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-2">IoT Device Setup</h3>
                     <p className="text-muted-foreground">
-                      Install IoT devices (RFID readers, cameras) at entry points. Students and staff receive unique identification cards or use biometric authentication.
+                      Install IoT devices (RFID/NFC readers) at entry points. Students receive unique identification cards for secure, proxy-proof authentication.
                     </p>
                   </div>
                 </div>
@@ -147,7 +144,7 @@ const Index = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Automatic Check-In</h3>
                     <p className="text-muted-foreground">
-                      Students tap their cards or authenticate via biometrics when entering. The system automatically records attendance with timestamp and location.
+                      Students tap their RFID/NFC cards when entering. The IoT system automatically records attendance with timestamp and location, preventing proxy attendance.
                     </p>
                   </div>
                 </div>

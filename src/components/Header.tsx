@@ -18,12 +18,6 @@ const Header = () => {
             <Link to="/" className="text-foreground hover:text-primary transition-colors">
               Home
             </Link>
-            <Link to="/features" className="text-foreground hover:text-primary transition-colors">
-              Features
-            </Link>
-            <Link to="/about" className="text-foreground hover:text-primary transition-colors">
-              About
-            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
