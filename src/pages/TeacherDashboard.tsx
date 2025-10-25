@@ -2,20 +2,34 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import StatsCard from "@/components/StatsCard";
 import AttendanceTable from "@/components/AttendanceTable";
-import { Users, CheckCircle, TrendingUp, AlertCircle, LogOut, Plus } from "lucide-react";
+import { Users, CheckCircle, TrendingUp, AlertCircle, LogOut, Plus, RefreshCw } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import IoTStatus from "@/components/IoTStatus";
+import IoTFeed from "@/components/IoTFeed";
+import { useToast } from "@/components/ui/use-toast";
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userData = location.state as { name?: string; email?: string; role?: string } || {};
+  const [isIoTConnected, setIsIoTConnected] = useState(true);
+  const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString());
+  const { toast } = useToast();
   
   useEffect(() => {
     if (!userData.name) {
       navigate("/");
     }
   }, [userData, navigate]);
+
+  const handleSyncData = () => {
+    setLastSync(new Date().toLocaleTimeString());
+    toast({
+      title: "Data Synced",
+      description: "Successfully refreshed data from IoT device",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -25,14 +39,25 @@ const TeacherDashboard = () => {
             <h1 className="text-2xl font-bold">Teacher Dashboard</h1>
             <p className="text-sm text-muted-foreground">Welcome, {userData.name || "Professor"}</p>
           </div>
-          <Button variant="ghost" onClick={() => navigate("/")}>
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-4">
+            <IoTStatus isConnected={isIoTConnected} />
+            <Button variant="ghost" onClick={() => navigate("/")}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-sm text-muted-foreground">Last data received from IoT module: {lastSync}</p>
+          <Button onClick={handleSyncData} variant="hero">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Sync Data from IoT Device
+          </Button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatsCard
             title="Total Students"
@@ -77,6 +102,8 @@ const TeacherDashboard = () => {
           </Card>
 
           <div className="space-y-6">
+            <IoTFeed />
+            
             <Card className="p-6 shadow-card">
               <h3 className="text-lg font-semibold mb-4">My Courses</h3>
               <div className="space-y-3">

@@ -1,9 +1,13 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import StatsCard from "@/components/StatsCard";
-import { Users, BookOpen, TrendingUp, Activity, LogOut, Settings, UserPlus } from "lucide-react";
+import { Users, BookOpen, TrendingUp, Activity, LogOut, Settings, UserPlus, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
+import IoTStatus from "@/components/IoTStatus";
+import IoTFeed from "@/components/IoTFeed";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Table,
   TableBody,
@@ -15,6 +19,17 @@ import {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [isIoTConnected, setIsIoTConnected] = useState(true);
+  const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString());
+  const { toast } = useToast();
+
+  const handleSyncData = () => {
+    setLastSync(new Date().toLocaleTimeString());
+    toast({
+      title: "Data Synced",
+      description: "Successfully refreshed data from IoT device",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -25,6 +40,7 @@ const AdminDashboard = () => {
             <p className="text-sm text-muted-foreground">System Overview & Management</p>
           </div>
           <div className="flex items-center gap-3">
+            <IoTStatus isConnected={isIoTConnected} />
             <Button variant="outline">
               <Settings className="w-4 h-4 mr-2" />
               Settings
@@ -38,6 +54,14 @@ const AdminDashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-sm text-muted-foreground">Last data received from IoT module: {lastSync}</p>
+          <Button onClick={handleSyncData} variant="hero">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Sync Data from IoT Device
+          </Button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatsCard
             title="Total Students"
@@ -69,8 +93,12 @@ const AdminDashboard = () => {
           />
         </div>
 
-        <Card className="p-6 shadow-card mb-8">
-          <Tabs defaultValue="students" className="w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+          <div className="lg:col-span-1">
+            <IoTFeed />
+          </div>
+          <Card className="lg:col-span-3 p-6 shadow-card">
+            <Tabs defaultValue="students" className="w-full">
             <div className="flex items-center justify-between mb-6">
               <TabsList>
                 <TabsTrigger value="students">Students</TabsTrigger>
@@ -255,6 +283,7 @@ const AdminDashboard = () => {
             </TabsContent>
           </Tabs>
         </Card>
+        </div>
       </main>
     </div>
   );
