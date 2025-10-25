@@ -3,11 +3,20 @@ import { Button } from "@/components/ui/button";
 import StatsCard from "@/components/StatsCard";
 import AttendanceTable from "@/components/AttendanceTable";
 import { Calendar, CheckCircle, TrendingUp, Clock, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
+import { useEffect } from "react";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const userData = location.state as { name?: string; email?: string; role?: string } || {};
+  
+  useEffect(() => {
+    if (!userData.name) {
+      navigate("/");
+    }
+  }, [userData, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -15,7 +24,7 @@ const StudentDashboard = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Student Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Welcome back, Priya Patel</p>
+            <p className="text-sm text-muted-foreground">Welcome back, {userData.name || "Student"}</p>
           </div>
           <Button variant="ghost" onClick={() => navigate("/")}>
             <LogOut className="w-4 h-4 mr-2" />
@@ -35,9 +44,9 @@ const StudentDashboard = () => {
           />
           <StatsCard
             title="Classes Attended"
-            value="46/50"
+            value="93/101"
             icon={CheckCircle}
-            trend="4 missed classes"
+            trend="8 missed classes"
             variant="default"
           />
           <StatsCard
@@ -68,21 +77,21 @@ const StudentDashboard = () => {
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span>Computer Science</span>
+                    <span>Calculus</span>
                     <span className="font-semibold">95%</span>
                   </div>
                   <Progress value={95} className="h-2" />
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span>Mathematics</span>
+                    <span>Digital Verilog</span>
                     <span className="font-semibold">88%</span>
                   </div>
                   <Progress value={88} className="h-2" />
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span>Physics</span>
+                    <span>IT Workshop</span>
                     <span className="font-semibold">92%</span>
                   </div>
                   <Progress value={92} className="h-2" />
@@ -96,15 +105,22 @@ const StudentDashboard = () => {
                 <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
                   <Calendar className="w-5 h-5 text-primary mt-0.5" />
                   <div className="flex-1">
-                    <p className="font-medium">Database Systems</p>
-                    <p className="text-sm text-muted-foreground">Today, 2:00 PM</p>
+                    <p className="font-medium">Calculus</p>
+                    <p className="text-sm text-muted-foreground">Today, 2:00 PM - Prof. K G Srinivasa</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
                   <Calendar className="w-5 h-5 text-primary mt-0.5" />
                   <div className="flex-1">
-                    <p className="font-medium">Web Development</p>
-                    <p className="text-sm text-muted-foreground">Tomorrow, 10:00 AM</p>
+                    <p className="font-medium">Digital Verilog</p>
+                    <p className="text-sm text-muted-foreground">Tomorrow, 10:00 AM - Prof. K G Srinivasa</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
+                  <Calendar className="w-5 h-5 text-primary mt-0.5" />
+                  <div className="flex-1">
+                    <p className="font-medium">IT Workshop</p>
+                    <p className="text-sm text-muted-foreground">Friday, 3:00 PM - Prof. K G Srinivasa</p>
                   </div>
                 </div>
               </div>

@@ -33,11 +33,12 @@ interface AttendanceRecord {
 
 // Mock data - Replace with live IoT data when devices are connected
 const mockData: AttendanceRecord[] = [
-  { id: "1", studentName: "Aarav Sharma", date: "2025-01-15", time: "09:00 AM", status: "present", course: "Computer Science" },
-  { id: "2", studentName: "Priya Patel", date: "2025-01-15", time: "09:05 AM", status: "late", course: "Computer Science" },
-  { id: "3", studentName: "Rahul Kumar", date: "2025-01-15", time: "-", status: "absent", course: "Computer Science" },
-  { id: "4", studentName: "Ananya Singh", date: "2025-01-15", time: "08:58 AM", status: "present", course: "Computer Science" },
-  { id: "5", studentName: "Arjun Reddy", date: "2025-01-15", time: "09:02 AM", status: "present", course: "Computer Science" },
+  { id: "1", studentName: "Ritesh Kumar", date: "2025-01-15", time: "09:00 AM", status: "present", course: "Calculus" },
+  { id: "2", studentName: "Srijan Kapoor", date: "2025-01-15", time: "09:02 AM", status: "present", course: "Calculus" },
+  { id: "3", studentName: "Arya Sharma", date: "2025-01-15", time: "09:15 AM", status: "late", course: "Calculus" },
+  { id: "4", studentName: "Arpit Jindal", date: "2025-01-15", time: "09:01 AM", status: "present", course: "Calculus" },
+  { id: "5", studentName: "Shikhar Srivastava", date: "2025-01-15", time: "-", status: "absent", course: "Calculus" },
+  { id: "6", studentName: "Suwanvit Mandal", date: "2025-01-15", time: "09:03 AM", status: "present", course: "Calculus" },
 ];
 
 const AttendanceTable = () => {

@@ -19,10 +19,14 @@ const Auth = () => {
     e.preventDefault();
     setIsLoading(true);
     
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const name = email.split("@")[0].replace(".", " ");
+    
     // Simulate login
     setTimeout(() => {
       toast.success("Login successful!");
-      navigate(`/${loginRole}`);
+      navigate(`/${loginRole}`, { state: { email, name, role: loginRole } });
       setIsLoading(false);
     }, 1000);
   };
@@ -31,10 +35,14 @@ const Auth = () => {
     e.preventDefault();
     setIsLoading(true);
     
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const name = formData.get("name") as string;
+    
     // Simulate signup
     setTimeout(() => {
       toast.success("Account created successfully!");
-      navigate("/student");
+      navigate(`/${signupRole}`, { state: { email, name, role: signupRole } });
       setIsLoading(false);
     }, 1000);
   };
@@ -63,6 +71,7 @@ const Auth = () => {
                 <Label htmlFor="login-email">Email</Label>
                 <Input
                   id="login-email"
+                  name="email"
                   type="email"
                   placeholder="student@university.edu"
                   required
@@ -72,6 +81,7 @@ const Auth = () => {
                 <Label htmlFor="login-password">Password</Label>
                 <Input
                   id="login-password"
+                  name="password"
                   type="password"
                   placeholder="••••••••"
                   required
@@ -102,6 +112,7 @@ const Auth = () => {
                 <Label htmlFor="signup-name">Full Name</Label>
                 <Input
                   id="signup-name"
+                  name="name"
                   type="text"
                   placeholder="John Doe"
                   required
@@ -111,6 +122,7 @@ const Auth = () => {
                 <Label htmlFor="signup-email">Email</Label>
                 <Input
                   id="signup-email"
+                  name="email"
                   type="email"
                   placeholder="student@university.edu"
                   required
@@ -120,6 +132,7 @@ const Auth = () => {
                 <Label htmlFor="signup-password">Password</Label>
                 <Input
                   id="signup-password"
+                  name="password"
                   type="password"
                   placeholder="••••••••"
                   required

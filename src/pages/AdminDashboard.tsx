@@ -41,9 +41,9 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatsCard
             title="Total Students"
-            value="1,248"
+            value="101"
             icon={Users}
-            trend="+15 this week"
+            trend="+5 this week"
             variant="default"
           />
           <StatsCard
@@ -99,7 +99,7 @@ const AdminDashboard = () => {
                   <TableBody>
                     <TableRow>
                       <TableCell>STU001</TableCell>
-                      <TableCell className="font-medium">Aarav Sharma</TableCell>
+                      <TableCell className="font-medium">Ritesh Kumar</TableCell>
                       <TableCell>Computer Science</TableCell>
                       <TableCell>92%</TableCell>
                       <TableCell>
@@ -111,9 +111,9 @@ const AdminDashboard = () => {
                     </TableRow>
                     <TableRow>
                       <TableCell>STU002</TableCell>
-                      <TableCell className="font-medium">Priya Patel</TableCell>
-                      <TableCell>Mathematics</TableCell>
-                      <TableCell>85%</TableCell>
+                      <TableCell className="font-medium">Srijan Kapoor</TableCell>
+                      <TableCell>Computer Science</TableCell>
+                      <TableCell>89%</TableCell>
                       <TableCell>
                         <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
                       </TableCell>
@@ -123,11 +123,47 @@ const AdminDashboard = () => {
                     </TableRow>
                     <TableRow>
                       <TableCell>STU003</TableCell>
-                      <TableCell className="font-medium">Ananya Singh</TableCell>
-                      <TableCell>Physics</TableCell>
-                      <TableCell>78%</TableCell>
+                      <TableCell className="font-medium">Arya Sharma</TableCell>
+                      <TableCell>Computer Science</TableCell>
+                      <TableCell>85%</TableCell>
+                      <TableCell>
+                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm">View</Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>STU004</TableCell>
+                      <TableCell className="font-medium">Arpit Jindal</TableCell>
+                      <TableCell>Computer Science</TableCell>
+                      <TableCell>88%</TableCell>
+                      <TableCell>
+                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm">View</Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>STU005</TableCell>
+                      <TableCell className="font-medium">Shikhar Srivastava</TableCell>
+                      <TableCell>Computer Science</TableCell>
+                      <TableCell>72%</TableCell>
                       <TableCell>
                         <span className="px-2 py-1 rounded text-xs bg-warning/10 text-warning">Warning</span>
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm">View</Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>STU006</TableCell>
+                      <TableCell className="font-medium">Suwanvit Mandal</TableCell>
+                      <TableCell>Computer Science</TableCell>
+                      <TableCell>91%</TableCell>
+                      <TableCell>
+                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
                       </TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm">View</Button>
@@ -154,20 +190,8 @@ const AdminDashboard = () => {
                   <TableBody>
                     <TableRow>
                       <TableCell>TCH001</TableCell>
-                      <TableCell className="font-medium">Prof. Rajesh Kumar</TableCell>
+                      <TableCell className="font-medium">Prof. K G Srinivasa</TableCell>
                       <TableCell>Computer Science</TableCell>
-                      <TableCell>4</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>TCH002</TableCell>
-                      <TableCell className="font-medium">Dr. Meera Desai</TableCell>
-                      <TableCell>Mathematics</TableCell>
                       <TableCell>3</TableCell>
                       <TableCell>
                         <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
@@ -197,20 +221,30 @@ const AdminDashboard = () => {
                   <TableBody>
                     <TableRow>
                       <TableCell>CS101</TableCell>
-                      <TableCell className="font-medium">Computer Science 101</TableCell>
+                      <TableCell className="font-medium">Calculus</TableCell>
                       <TableCell>Computer Science</TableCell>
-                      <TableCell>45</TableCell>
-                      <TableCell>Prof. Rajesh Kumar</TableCell>
+                      <TableCell>101</TableCell>
+                      <TableCell>Prof. K G Srinivasa</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm">View</Button>
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>MATH201</TableCell>
-                      <TableCell className="font-medium">Advanced Calculus</TableCell>
-                      <TableCell>Mathematics</TableCell>
-                      <TableCell>38</TableCell>
-                      <TableCell>Dr. Meera Desai</TableCell>
+                      <TableCell>CS102</TableCell>
+                      <TableCell className="font-medium">Digital Verilog</TableCell>
+                      <TableCell>Computer Science</TableCell>
+                      <TableCell>101</TableCell>
+                      <TableCell>Prof. K G Srinivasa</TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm">View</Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>CS103</TableCell>
+                      <TableCell className="font-medium">IT Workshop</TableCell>
+                      <TableCell>Computer Science</TableCell>
+                      <TableCell>101</TableCell>
+                      <TableCell>Prof. K G Srinivasa</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm">View</Button>
                       </TableCell>

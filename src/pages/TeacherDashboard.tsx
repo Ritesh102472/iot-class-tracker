@@ -3,10 +3,19 @@ import { Button } from "@/components/ui/button";
 import StatsCard from "@/components/StatsCard";
 import AttendanceTable from "@/components/AttendanceTable";
 import { Users, CheckCircle, TrendingUp, AlertCircle, LogOut, Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const userData = location.state as { name?: string; email?: string; role?: string } || {};
+  
+  useEffect(() => {
+    if (!userData.name) {
+      navigate("/");
+    }
+  }, [userData, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -14,7 +23,7 @@ const TeacherDashboard = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Teacher Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Welcome, Prof. Rajesh Kumar</p>
+            <p className="text-sm text-muted-foreground">Welcome, Prof. K G Srinivasa</p>
           </div>
           <Button variant="ghost" onClick={() => navigate("/")}>
             <LogOut className="w-4 h-4 mr-2" />
@@ -27,9 +36,9 @@ const TeacherDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatsCard
             title="Total Students"
-            value="156"
+            value="101"
             icon={Users}
-            trend="Across 4 courses"
+            trend="Across 3 courses"
             variant="default"
           />
           <StatsCard
@@ -41,7 +50,7 @@ const TeacherDashboard = () => {
           />
           <StatsCard
             title="Present Today"
-            value="42/45"
+            value="95/101"
             icon={CheckCircle}
             trend="Current class"
             variant="accent"
@@ -58,7 +67,7 @@ const TeacherDashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <Card className="lg:col-span-2 p-6 shadow-card">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Today's Attendance - Computer Science 101</h2>
+              <h2 className="text-xl font-semibold">Today's Attendance - Calculus</h2>
               <Button variant="hero">
                 <Plus className="w-4 h-4 mr-2" />
                 Mark Attendance
@@ -73,26 +82,26 @@ const TeacherDashboard = () => {
               <div className="space-y-3">
                 <div className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer">
                   <div className="flex justify-between items-start mb-2">
-                    <p className="font-medium">Computer Science 101</p>
+                    <p className="font-medium">Calculus</p>
                     <span className="text-xs bg-success/10 text-success px-2 py-1 rounded">Active</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">45 students</p>
+                  <p className="text-sm text-muted-foreground">101 students</p>
                   <p className="text-sm text-muted-foreground">Avg: 89%</p>
                 </div>
                 <div className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer">
                   <div className="flex justify-between items-start mb-2">
-                    <p className="font-medium">Data Structures</p>
+                    <p className="font-medium">Digital Verilog</p>
                     <span className="text-xs bg-success/10 text-success px-2 py-1 rounded">Active</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">38 students</p>
+                  <p className="text-sm text-muted-foreground">101 students</p>
                   <p className="text-sm text-muted-foreground">Avg: 85%</p>
                 </div>
                 <div className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer">
                   <div className="flex justify-between items-start mb-2">
-                    <p className="font-medium">Advanced Algorithms</p>
+                    <p className="font-medium">IT Workshop</p>
                     <span className="text-xs bg-success/10 text-success px-2 py-1 rounded">Active</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">32 students</p>
+                  <p className="text-sm text-muted-foreground">101 students</p>
                   <p className="text-sm text-muted-foreground">Avg: 91%</p>
                 </div>
               </div>
@@ -107,7 +116,7 @@ const TeacherDashboard = () => {
                 </div>
                 <div className="p-3 rounded-lg bg-accent/10 border border-accent/20">
                   <p className="text-sm font-medium text-accent">Class Scheduled</p>
-                  <p className="text-xs text-muted-foreground mt-1">CS 101 - Today 2:00 PM</p>
+                  <p className="text-xs text-muted-foreground mt-1">Calculus - Today 2:00 PM</p>
                 </div>
               </div>
             </Card>
