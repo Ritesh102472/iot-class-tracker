@@ -44,9 +44,9 @@ const StudentDashboard = () => {
           />
           <StatsCard
             title="Classes Attended"
-            value="93/101"
+            value="87/101"
             icon={CheckCircle}
-            trend="8 missed classes"
+            trend="14 missed classes"
             variant="default"
           />
           <StatsCard
@@ -106,21 +106,21 @@ const StudentDashboard = () => {
                   <Calendar className="w-5 h-5 text-primary mt-0.5" />
                   <div className="flex-1">
                     <p className="font-medium">Calculus</p>
-                    <p className="text-sm text-muted-foreground">Today, 2:00 PM - Prof. K G Srinivasa</p>
+                    <p className="text-sm text-muted-foreground">Today, 2:00 PM - Dr. Chandrashekhar</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
                   <Calendar className="w-5 h-5 text-primary mt-0.5" />
                   <div className="flex-1">
                     <p className="font-medium">Digital Verilog</p>
-                    <p className="text-sm text-muted-foreground">Tomorrow, 10:00 AM - Prof. K G Srinivasa</p>
+                    <p className="text-sm text-muted-foreground">Tomorrow, 10:00 AM - Dr. Manoj Majumder</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
                   <Calendar className="w-5 h-5 text-primary mt-0.5" />
                   <div className="flex-1">
                     <p className="font-medium">IT Workshop</p>
-                    <p className="text-sm text-muted-foreground">Friday, 3:00 PM - Prof. K G Srinivasa</p>
+                    <p className="text-sm text-muted-foreground">Friday, 3:00 PM - Dr. K G Srinivasa</p>
                   </div>
                 </div>
               </div>

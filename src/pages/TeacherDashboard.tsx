@@ -23,7 +23,7 @@ const TeacherDashboard = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Teacher Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Welcome, Prof. K G Srinivasa</p>
+            <p className="text-sm text-muted-foreground">Welcome, {userData.name || "Professor"}</p>
           </div>
           <Button variant="ghost" onClick={() => navigate("/")}>
             <LogOut className="w-4 h-4 mr-2" />
