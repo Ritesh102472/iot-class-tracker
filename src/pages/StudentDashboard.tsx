@@ -10,6 +10,8 @@ import IoTStatus from "@/components/IoTStatus";
 import IoTFeed from "@/components/IoTFeed";
 import { useToast } from "@/components/ui/use-toast";
 import { useAttendance } from "@/hooks/useAttendance";
+import { useStudents } from "@/hooks/useStudents";
+import { supabase } from "@/integrations/supabase/client";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -19,6 +21,15 @@ const StudentDashboard = () => {
   const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString());
   const { toast } = useToast();
   const { attendance, refetch: refetchAttendance } = useAttendance();
+  const { students, refetch: refetchStudents } = useStudents();
+  
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [overallAttendance, setOverallAttendance] = useState(0);
+  const [classesAttended, setClassesAttended] = useState(0);
+  const [totalClasses, setTotalClasses] = useState(0);
+  const [thisMonthAttended, setThisMonthAttended] = useState(0);
+  const [thisMonthTotal, setThisMonthTotal] = useState(0);
+  const [lateArrivals, setLateArrivals] = useState(0);
 
   const lastFiveAttendance = [...attendance]
     .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
@@ -30,7 +41,83 @@ const StudentDashboard = () => {
     }
   }, [userData, navigate]);
 
+  useEffect(() => {
+    setTotalStudents(students.length);
+  }, [students]);
+
+  useEffect(() => {
+    if (attendance.length > 0) {
+      const presentCount = attendance.filter(a => a.status === 'present').length;
+      const percentage = Math.round((presentCount / attendance.length) * 100);
+      setOverallAttendance(percentage);
+      setClassesAttended(presentCount);
+      setTotalClasses(attendance.length);
+
+      const lateCount = attendance.filter(a => a.status === 'late').length;
+      setLateArrivals(lateCount);
+
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+      
+      const thisMonthRecords = attendance.filter(a => {
+        if (!a.date) return false;
+        const recordDate = new Date(a.date);
+        return recordDate.getMonth() === currentMonth && recordDate.getFullYear() === currentYear;
+      });
+      
+      const thisMonthPresent = thisMonthRecords.filter(a => a.status === 'present').length;
+      setThisMonthAttended(thisMonthPresent);
+      setThisMonthTotal(thisMonthRecords.length);
+    } else {
+      setOverallAttendance(0);
+      setClassesAttended(0);
+      setTotalClasses(0);
+      setThisMonthAttended(0);
+      setThisMonthTotal(0);
+      setLateArrivals(0);
+    }
+  }, [attendance]);
+
+  useEffect(() => {
+    const studentsChannel = supabase
+      .channel('students-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'students'
+        },
+        () => {
+          refetchStudents();
+        }
+      )
+      .subscribe();
+
+    const attendanceChannel = supabase
+      .channel('attendance-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'attendance'
+        },
+        () => {
+          refetchAttendance();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(studentsChannel);
+      supabase.removeChannel(attendanceChannel);
+    };
+  }, [refetchStudents, refetchAttendance]);
+
   const handleSyncData = () => {
+    refetchStudents();
     refetchAttendance();
     setLastSync(new Date().toLocaleTimeString());
     toast({
@@ -69,28 +156,28 @@ const StudentDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatsCard
             title="Overall Attendance"
-            value="92%"
+            value={totalClasses > 0 ? `${overallAttendance}%` : "0%"}
             icon={TrendingUp}
-            trend="+5% from last month"
+            trend={totalClasses > 0 ? `${classesAttended}/${totalClasses} classes` : "No data"}
             variant="success"
           />
           <StatsCard
             title="Classes Attended"
-            value="87/101"
+            value={`${classesAttended}/${totalClasses}`}
             icon={CheckCircle}
-            trend="14 missed classes"
+            trend={totalClasses > 0 ? `${totalClasses - classesAttended} missed` : "No classes recorded"}
             variant="default"
           />
           <StatsCard
             title="This Month"
-            value="18/20"
+            value={`${thisMonthAttended}/${thisMonthTotal}`}
             icon={Calendar}
-            trend="90% attendance"
+            trend={thisMonthTotal > 0 ? `${Math.round((thisMonthAttended / thisMonthTotal) * 100)}% attendance` : "No data this month"}
             variant="accent"
           />
           <StatsCard
             title="Late Arrivals"
-            value="3"
+            value={lateArrivals.toString()}
             icon={Clock}
             trend="This semester"
             variant="warning"
@@ -107,29 +194,24 @@ const StudentDashboard = () => {
             <IoTFeed attendanceData={lastFiveAttendance} />
             
             <Card className="p-6 shadow-card">
-              <h3 className="text-lg font-semibold mb-4">Course Performance</h3>
+              <h3 className="text-lg font-semibold mb-4">Overall Performance</h3>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span>Calculus</span>
-                    <span className="font-semibold">95%</span>
+                    <span>Attendance Rate</span>
+                    <span className="font-semibold">{overallAttendance}%</span>
                   </div>
-                  <Progress value={95} className="h-2" />
+                  <Progress value={overallAttendance} className="h-2" />
                 </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>Digital Verilog</span>
-                    <span className="font-semibold">88%</span>
+                {thisMonthTotal > 0 && (
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span>This Month</span>
+                      <span className="font-semibold">{Math.round((thisMonthAttended / thisMonthTotal) * 100)}%</span>
+                    </div>
+                    <Progress value={Math.round((thisMonthAttended / thisMonthTotal) * 100)} className="h-2" />
                   </div>
-                  <Progress value={88} className="h-2" />
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>IT Workshop</span>
-                    <span className="font-semibold">92%</span>
-                  </div>
-                  <Progress value={92} className="h-2" />
-                </div>
+                )}
               </div>
             </Card>
 
