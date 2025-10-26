@@ -7,42 +7,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Clock } from "lucide-react";
-
-/**
- * AttendanceTable Component
- * 
- * This component displays attendance records.
- * Currently using mock data for demonstration purposes.
- * 
- * IoT Integration:
- * - This component is designed to receive real-time data from IoT devices (RFID/NFC readers)
- * - The data structure matches the expected format from iotDataService.ts
- * - Once your IoT project is built, replace mockData with live data from the IoT service
- * - See src/services/iotDataService.ts for IoT data integration guide
- */
-
-interface AttendanceRecord {
-  id: string;
-  studentName: string;
-  date: string;
-  time: string;
-  status: "present" | "absent" | "late";
-  course: string;
-}
-
-// Mock data - Replace with live IoT data when devices are connected
-const mockData: AttendanceRecord[] = [
-  { id: "1", studentName: "Ritesh Kumar", date: "2025-01-15", time: "09:00 AM", status: "present", course: "Calculus" },
-  { id: "2", studentName: "Srijan Kapoor", date: "2025-01-15", time: "09:02 AM", status: "present", course: "Calculus" },
-  { id: "3", studentName: "Arya Sharma", date: "2025-01-15", time: "09:15 AM", status: "late", course: "Calculus" },
-  { id: "4", studentName: "Arpit Jindal", date: "2025-01-15", time: "09:01 AM", status: "present", course: "Calculus" },
-  { id: "5", studentName: "Shikhar Srivastava", date: "2025-01-15", time: "-", status: "absent", course: "Calculus" },
-  { id: "6", studentName: "Suwanvit Mandal", date: "2025-01-15", time: "09:03 AM", status: "present", course: "Calculus" },
-];
+import { CheckCircle2, XCircle, Clock, Loader2 } from "lucide-react";
+import { useAttendance } from "@/hooks/useAttendance";
+import { format } from "date-fns";
 
 const AttendanceTable = () => {
-  const getStatusBadge = (status: AttendanceRecord["status"]) => {
+  const { attendance, loading, error } = useAttendance();
+  const getStatusBadge = (status: string | null) => {
+    if (!status) return null;
     switch (status) {
       case "present":
         return (
@@ -68,25 +40,50 @@ const AttendanceTable = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+        <span className="ml-2 text-muted-foreground">Loading attendance...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 text-center text-destructive">
+        Error loading attendance: {error}
+      </div>
+    );
+  }
+
+  if (attendance.length === 0) {
+    return (
+      <div className="p-8 text-center text-muted-foreground">
+        No attendance records found. Add records to get started.
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-lg border border-border bg-card shadow-card">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Student Name</TableHead>
-            <TableHead>Course</TableHead>
+            <TableHead>Roll Number</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead>Time</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {mockData.map((record) => (
+          {attendance.map((record) => (
             <TableRow key={record.id}>
-              <TableCell className="font-medium">{record.studentName}</TableCell>
-              <TableCell>{record.course}</TableCell>
-              <TableCell>{record.date}</TableCell>
-              <TableCell>{record.time}</TableCell>
+              <TableCell className="font-medium">{record.student_name}</TableCell>
+              <TableCell>{record.student_roll || '-'}</TableCell>
+              <TableCell>
+                {record.date ? format(new Date(record.date), 'MMM dd, yyyy') : '-'}
+              </TableCell>
               <TableCell>{getStatusBadge(record.status)}</TableCell>
             </TableRow>
           ))}

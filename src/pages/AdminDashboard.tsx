@@ -4,31 +4,54 @@ import StatsCard from "@/components/StatsCard";
 import { Users, BookOpen, TrendingUp, Activity, LogOut, Settings, UserPlus, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import IoTStatus from "@/components/IoTStatus";
 import IoTFeed from "@/components/IoTFeed";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import StudentsTable from "@/components/StudentsTable";
+import AttendanceTable from "@/components/AttendanceTable";
+import AddAttendanceForm from "@/components/AddAttendanceForm";
+import { useStudents } from "@/hooks/useStudents";
+import { useAttendance } from "@/hooks/useAttendance";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [isIoTConnected, setIsIoTConnected] = useState(true);
   const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString());
   const { toast } = useToast();
+  const { students, refetch: refetchStudents } = useStudents();
+  const { attendance, refetch: refetchAttendance, addAttendance } = useAttendance();
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [attendancePercentage, setAttendancePercentage] = useState(0);
+
+  useEffect(() => {
+    setTotalStudents(students.length);
+  }, [students]);
+
+  useEffect(() => {
+    if (attendance.length > 0) {
+      const presentCount = attendance.filter(a => a.status === 'present').length;
+      const percentage = Math.round((presentCount / attendance.length) * 100);
+      setAttendancePercentage(percentage);
+    }
+  }, [attendance]);
 
   const handleSyncData = () => {
     setLastSync(new Date().toLocaleTimeString());
+    refetchStudents();
+    refetchAttendance();
     toast({
       title: "Data Synced",
       description: "Successfully refreshed data from IoT device",
     });
+  };
+
+  const handleAddAttendance = async (studentId: string, date: string, status: string) => {
+    const result = await addAttendance(studentId, date, status);
+    if (result.success) {
+      refetchAttendance();
+    }
+    return result;
   };
 
   return (
@@ -65,28 +88,28 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatsCard
             title="Total Students"
-            value="101"
+            value={totalStudents.toString()}
             icon={Users}
-            trend="+5 this week"
+            trend={`${students.length} active`}
             variant="default"
           />
           <StatsCard
-            title="Active Courses"
-            value="42"
+            title="Attendance Records"
+            value={attendance.length.toString()}
             icon={BookOpen}
-            trend="8 departments"
+            trend="Total entries"
             variant="accent"
           />
           <StatsCard
-            title="System Attendance"
-            value="89%"
+            title="Attendance Rate"
+            value={`${attendancePercentage}%`}
             icon={TrendingUp}
-            trend="+2% vs last month"
+            trend="Overall performance"
             variant="success"
           />
           <StatsCard
             title="IoT Devices"
-            value="156"
+            value="3"
             icon={Activity}
             trend="All online"
             variant="default"
@@ -94,195 +117,29 @@ const AdminDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 space-y-6">
             <IoTFeed />
+            <AddAttendanceForm onAttendanceAdded={handleAddAttendance} />
           </div>
+          
           <Card className="lg:col-span-3 p-6 shadow-card">
             <Tabs defaultValue="students" className="w-full">
-            <div className="flex items-center justify-between mb-6">
-              <TabsList>
-                <TabsTrigger value="students">Students</TabsTrigger>
-                <TabsTrigger value="teachers">Teachers</TabsTrigger>
-                <TabsTrigger value="courses">Courses</TabsTrigger>
-              </TabsList>
-              <Button variant="hero">
-                <UserPlus className="w-4 h-4 mr-2" />
-                Add New
-              </Button>
-            </div>
-
-            <TabsContent value="students">
-              <div className="rounded-lg border border-border bg-card">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Student ID</TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Department</TableHead>
-                      <TableHead>Attendance</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>STU001</TableCell>
-                      <TableCell className="font-medium">Ritesh Kumar</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>92%</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>STU002</TableCell>
-                      <TableCell className="font-medium">Srijan Kapoor</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>89%</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>STU003</TableCell>
-                      <TableCell className="font-medium">Arya Sharma</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>85%</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>STU004</TableCell>
-                      <TableCell className="font-medium">Arpit Jindal</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>88%</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>STU005</TableCell>
-                      <TableCell className="font-medium">Shikhar Srivastava</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>72%</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 rounded text-xs bg-warning/10 text-warning">Warning</span>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>STU006</TableCell>
-                      <TableCell className="font-medium">Suwanvit Mandal</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>91%</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
+              <div className="flex items-center justify-between mb-6">
+                <TabsList>
+                  <TabsTrigger value="students">Students</TabsTrigger>
+                  <TabsTrigger value="attendance">Attendance Records</TabsTrigger>
+                </TabsList>
               </div>
-            </TabsContent>
 
-            <TabsContent value="teachers">
-              <div className="rounded-lg border border-border bg-card">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Teacher ID</TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Department</TableHead>
-                      <TableHead>Courses</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>TCH001</TableCell>
-                      <TableCell className="font-medium">Prof. K G Srinivasa</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>3</TableCell>
-                      <TableCell>
-                        <span className="px-2 py-1 rounded text-xs bg-success/10 text-success">Active</span>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
+              <TabsContent value="students">
+                <StudentsTable />
+              </TabsContent>
 
-            <TabsContent value="courses">
-              <div className="rounded-lg border border-border bg-card">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Course Code</TableHead>
-                      <TableHead>Course Name</TableHead>
-                      <TableHead>Department</TableHead>
-                      <TableHead>Students</TableHead>
-                      <TableHead>Teacher</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>CS101</TableCell>
-                      <TableCell className="font-medium">Calculus</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>101</TableCell>
-                      <TableCell>Prof. K G Srinivasa</TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>CS102</TableCell>
-                      <TableCell className="font-medium">Digital Verilog</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>101</TableCell>
-                      <TableCell>Prof. K G Srinivasa</TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>CS103</TableCell>
-                      <TableCell className="font-medium">IT Workshop</TableCell>
-                      <TableCell>Computer Science</TableCell>
-                      <TableCell>101</TableCell>
-                      <TableCell>Prof. K G Srinivasa</TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm">View</Button>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </Card>
+              <TabsContent value="attendance">
+                <AttendanceTable />
+              </TabsContent>
+            </Tabs>
+          </Card>
         </div>
       </main>
     </div>
