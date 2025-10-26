@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import IoTStatus from "@/components/IoTStatus";
 import IoTFeed from "@/components/IoTFeed";
 import { useToast } from "@/components/ui/use-toast";
+import { useAttendance } from "@/hooks/useAttendance";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -17,6 +18,11 @@ const StudentDashboard = () => {
   const [isIoTConnected, setIsIoTConnected] = useState(true);
   const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString());
   const { toast } = useToast();
+  const { attendance, refetch: refetchAttendance } = useAttendance();
+
+  const lastFiveAttendance = [...attendance]
+    .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+    .slice(0, 5);
   
   useEffect(() => {
     if (!userData.name) {
@@ -25,6 +31,7 @@ const StudentDashboard = () => {
   }, [userData, navigate]);
 
   const handleSyncData = () => {
+    refetchAttendance();
     setLastSync(new Date().toLocaleTimeString());
     toast({
       title: "Data Synced",
@@ -97,7 +104,7 @@ const StudentDashboard = () => {
           </Card>
 
           <div className="space-y-6">
-            <IoTFeed />
+            <IoTFeed attendanceData={lastFiveAttendance} />
             
             <Card className="p-6 shadow-card">
               <h3 className="text-lg font-semibold mb-4">Course Performance</h3>

@@ -8,6 +8,10 @@ import { useEffect, useState } from "react";
 import IoTStatus from "@/components/IoTStatus";
 import IoTFeed from "@/components/IoTFeed";
 import { useToast } from "@/components/ui/use-toast";
+import { useStudents } from "@/hooks/useStudents";
+import { useAttendance } from "@/hooks/useAttendance";
+import { supabase } from "@/integrations/supabase/client";
+import { format } from "date-fns";
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
@@ -16,6 +20,29 @@ const TeacherDashboard = () => {
   const [isIoTConnected, setIsIoTConnected] = useState(true);
   const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString());
   const { toast } = useToast();
+  const { students, refetch: refetchStudents } = useStudents();
+  const { attendance, refetch: refetchAttendance } = useAttendance();
+
+  const totalStudents = students.length;
+  const totalAttendance = attendance.length;
+  const presentCount = attendance.filter(a => a.status === 'present').length;
+  const averageAttendance = totalAttendance > 0 ? Math.round((presentCount / totalAttendance) * 100) : 0;
+  
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const todayAttendance = attendance.filter(a => a.date === today);
+  const presentToday = todayAttendance.filter(a => a.status === 'present').length;
+  const totalToday = todayAttendance.length;
+
+  const lowAttendanceStudents = students.filter(student => {
+    const studentAttendance = attendance.filter(a => a.student_id === student.id);
+    if (studentAttendance.length === 0) return false;
+    const studentPresent = studentAttendance.filter(a => a.status === 'present').length;
+    return (studentPresent / studentAttendance.length) < 0.75;
+  }).length;
+
+  const lastFiveAttendance = [...attendance]
+    .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+    .slice(0, 5);
   
   useEffect(() => {
     if (!userData.name) {
@@ -23,7 +50,35 @@ const TeacherDashboard = () => {
     }
   }, [userData, navigate]);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel('dashboard-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'students' },
+        () => {
+          refetchStudents();
+          setLastSync(new Date().toLocaleTimeString());
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'attendance' },
+        () => {
+          refetchAttendance();
+          setLastSync(new Date().toLocaleTimeString());
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [refetchStudents, refetchAttendance]);
+
   const handleSyncData = () => {
+    refetchStudents();
+    refetchAttendance();
     setLastSync(new Date().toLocaleTimeString());
     toast({
       title: "Data Synced",
@@ -61,28 +116,28 @@ const TeacherDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatsCard
             title="Total Students"
-            value="101"
+            value={totalStudents.toString()}
             icon={Users}
             trend="Across 3 courses"
             variant="default"
           />
           <StatsCard
             title="Average Attendance"
-            value="87%"
+            value={`${averageAttendance}%`}
             icon={TrendingUp}
-            trend="+3% this week"
+            trend="All time average"
             variant="success"
           />
           <StatsCard
             title="Present Today"
-            value="95/101"
+            value={`${presentToday}/${totalToday}`}
             icon={CheckCircle}
             trend="Current class"
             variant="accent"
           />
           <StatsCard
             title="Low Attendance"
-            value="8"
+            value={lowAttendanceStudents.toString()}
             icon={AlertCircle}
             trend="Students <75%"
             variant="warning"
@@ -102,7 +157,7 @@ const TeacherDashboard = () => {
           </Card>
 
           <div className="space-y-6">
-            <IoTFeed />
+            <IoTFeed attendanceData={lastFiveAttendance} />
             
             <Card className="p-6 shadow-card">
               <h3 className="text-lg font-semibold mb-4">My Courses</h3>

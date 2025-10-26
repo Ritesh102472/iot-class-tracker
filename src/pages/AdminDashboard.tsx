@@ -54,6 +54,10 @@ const AdminDashboard = () => {
     return result;
   };
 
+  const lastFiveAttendance = [...attendance]
+    .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+    .slice(0, 5);
+
   return (
     <div className="min-h-screen bg-gradient-subtle">
       <header className="bg-card border-b border-border shadow-sm">
@@ -118,7 +122,7 @@ const AdminDashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
           <div className="lg:col-span-1 space-y-6">
-            <IoTFeed />
+            <IoTFeed attendanceData={lastFiveAttendance} />
             <AddAttendanceForm onAttendanceAdded={handleAddAttendance} />
           </div>
           

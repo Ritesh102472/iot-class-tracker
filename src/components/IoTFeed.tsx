@@ -1,19 +1,20 @@
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { format } from "date-fns";
 
-interface FeedItem {
-  studentId: string;
-  timestamp: string;
+interface AttendanceRecord {
+  id: string;
+  student_name: string | null;
+  student_roll: string | null;
+  date: string | null;
+  status: string | null;
 }
 
-const IoTFeed = () => {
-  const feedItems: FeedItem[] = [
-    { studentId: "STU101", timestamp: "09:15 AM" },
-    { studentId: "STU045", timestamp: "09:14 AM" },
-    { studentId: "STU089", timestamp: "09:13 AM" },
-    { studentId: "STU023", timestamp: "09:12 AM" },
-    { studentId: "STU067", timestamp: "09:11 AM" },
-  ];
+interface IoTFeedProps {
+  attendanceData: AttendanceRecord[];
+}
+
+const IoTFeed = ({ attendanceData }: IoTFeedProps) => {
 
   return (
     <Card className="p-6 shadow-card">
@@ -27,18 +28,27 @@ const IoTFeed = () => {
       <p className="text-xs text-muted-foreground mb-3">Active Connection</p>
       <ScrollArea className="h-[200px]">
         <div className="space-y-2">
-          {feedItems.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <span className="font-medium text-sm">{item.studentId}</span>
-              <span className="text-xs text-muted-foreground">
-                Attendance Marked at {item.timestamp}
-              </span>
+          {attendanceData.length === 0 ? (
+            <div className="p-4 text-center text-muted-foreground text-sm">
+              No recent attendance records
             </div>
-          ))}
+          ) : (
+            attendanceData.map((record, index) => (
+              <div
+                key={record.id}
+                className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <span className="font-medium text-sm">{record.student_name || 'Unknown'}</span>
+                <span className="text-xs text-muted-foreground">
+                  {record.status} - {record.date ? (() => {
+                    const date = new Date(record.date);
+                    return !isNaN(date.getTime()) ? format(date, 'MMM dd, h:mm a') : record.date;
+                  })() : 'No date'}
+                </span>
+              </div>
+            ))
+          )}
         </div>
       </ScrollArea>
     </Card>
