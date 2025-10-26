@@ -82,7 +82,10 @@ const AttendanceTable = () => {
               <TableCell className="font-medium">{record.student_name}</TableCell>
               <TableCell>{record.student_roll || '-'}</TableCell>
               <TableCell>
-                {record.date ? format(new Date(record.date), 'MMM dd, yyyy') : '-'}
+                {record.date ? (() => {
+                  const date = new Date(record.date);
+                  return !isNaN(date.getTime()) ? format(date, 'MMM dd, yyyy') : record.date;
+                })() : '-'}
               </TableCell>
               <TableCell>{getStatusBadge(record.status)}</TableCell>
             </TableRow>
