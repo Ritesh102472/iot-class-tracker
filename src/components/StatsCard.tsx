@@ -18,17 +18,17 @@ const StatsCard = ({ title, value, icon: Icon, trend, variant = "default" }: Sta
   };
 
   return (
-    <Card className="p-6 shadow-card hover:shadow-elegant transition-shadow">
+    <Card className="p-6 shadow-card hover:shadow-elegant transition-all duration-500 hover:gold-glow">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-muted-foreground mb-1">{title}</p>
-          <p className="text-3xl font-bold">{value}</p>
+          <p className="text-sm text-muted-foreground mb-2 font-body tracking-wide">{title}</p>
+          <p className="text-4xl font-bold font-heading bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">{value}</p>
           {trend && (
-            <p className="text-xs text-muted-foreground mt-2">{trend}</p>
+            <p className="text-xs text-muted-foreground mt-3 font-body">{trend}</p>
           )}
         </div>
-        <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${variantStyles[variant]} flex items-center justify-center`}>
-          <Icon className="w-6 h-6" />
+        <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${variantStyles[variant]} flex items-center justify-center shadow-glow`}>
+          <Icon className="w-7 h-7" />
         </div>
       </div>
     </Card>

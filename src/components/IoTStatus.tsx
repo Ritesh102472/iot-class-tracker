@@ -6,14 +6,14 @@ interface IoTStatusProps {
 
 const IoTStatus = ({ isConnected }: IoTStatusProps) => {
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm font-medium">IoT Device:</span>
+    <div className="flex items-center gap-3">
+      <span className="text-sm font-body font-medium">IoT Device:</span>
       {isConnected ? (
-        <Badge variant="default" className="bg-success/10 text-success border-success/20">
+        <Badge variant="default" className="glass-card bg-success/20 text-success border-success/30 shadow-sm font-body">
           Connected ✅
         </Badge>
       ) : (
-        <Badge variant="default" className="bg-destructive/10 text-destructive border-destructive/20">
+        <Badge variant="default" className="glass-card bg-destructive/20 text-destructive border-destructive/30 shadow-sm font-body">
           Offline ❌
         </Badge>
       )}
