@@ -5,18 +5,18 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold font-body ring-offset-background transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-gradient-primary text-primary-foreground hover:scale-105 hover:shadow-neon-teal shadow-card",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:scale-105 hover:shadow-lg",
-        outline: "glass-card border border-primary/30 text-foreground hover:bg-primary/10 hover:border-primary/50 hover:scale-105",
-        secondary: "bg-gradient-secondary text-secondary-foreground hover:scale-105 hover:shadow-neon-purple",
-        ghost: "hover:glass-card hover:text-primary hover:scale-105",
-        link: "text-primary underline-offset-4 hover:underline hover:text-primary-glow",
-        hero: "bg-gradient-primary text-primary-foreground hover:scale-105 shadow-neon-teal hover:shadow-neon-purple",
-        success: "bg-success text-success-foreground hover:scale-105 hover:shadow-lg",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-elegant",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+        hero: "bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-elegant",
+        success: "bg-success text-success-foreground hover:bg-success/90",
       },
       size: {
         default: "h-10 px-4 py-2",
