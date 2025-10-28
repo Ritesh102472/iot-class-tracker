@@ -12,10 +12,16 @@ const Index = () => {
       <Header />
       
       {/* Hero Section with Gradient */}
-      <section className="relative pt-32 pb-24 overflow-hidden bg-gradient-hero">
+      <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl animate-pulse-glow" />
-          <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-secondary/20 to-transparent rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1s' }} />
+          <img 
+            src={heroBg} 
+            alt="Hero Background" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-hero" />
+          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl" />
+          <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-secondary/20 to-transparent rounded-full blur-3xl" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -35,7 +41,7 @@ const Index = () => {
               <Button 
                 asChild 
                 size="lg"
-                className="relative group px-8 py-7 text-lg font-bold bg-gradient-primary hover:scale-110 shadow-neon-teal hover:shadow-neon-purple transition-all duration-500 animate-pulse-glow"
+                className="relative group px-8 py-7 text-lg font-bold bg-gradient-primary hover:scale-110 shadow-neon-teal hover:shadow-neon-purple transition-all duration-500"
               >
                 <Link to="/auth">
                   <span className="relative z-10">Get Started</span>
@@ -203,7 +209,7 @@ const Index = () => {
           <Button 
             asChild 
             size="lg"
-            className="px-10 py-8 text-xl font-bold bg-gradient-primary hover:scale-110 shadow-neon-teal hover:shadow-neon-purple transition-all duration-500 animate-pulse-glow"
+            className="px-10 py-8 text-xl font-bold bg-gradient-primary hover:scale-110 shadow-neon-teal hover:shadow-neon-purple transition-all duration-500"
           >
             <Link to="/auth">Start Your Free Trial</Link>
           </Button>
