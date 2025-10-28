@@ -77,10 +77,10 @@ const AttendanceChatBot = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-neon-teal z-50 glass-card"
+          className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-neon-purple z-50 glass-card bg-gradient-primary hover:scale-110 transition-transform duration-300 border-2 border-primary/50"
           size="icon"
         >
-          <MessageCircle className="h-6 w-6" />
+          <MessageCircle className="h-7 w-7" />
         </Button>
       )}
 
