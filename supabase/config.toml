@@ -1,1 +1,4 @@
 project_id = "lcwvpxmsxnhhvsqwjkuz"
+
+[functions.attendance-chat]
+verify_jwt = false

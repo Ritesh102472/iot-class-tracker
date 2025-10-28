@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import AttendanceChatBot from "@/components/AttendanceChatBot";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -211,6 +212,8 @@ const AdminDashboard = () => {
           </Card>
         </div>
       </main>
+      
+      <AttendanceChatBot />
     </div>
   );
 };

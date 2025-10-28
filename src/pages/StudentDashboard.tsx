@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useAttendance } from "@/hooks/useAttendance";
 import { useStudents } from "@/hooks/useStudents";
 import { supabase } from "@/integrations/supabase/client";
+import AttendanceChatBot from "@/components/AttendanceChatBot";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -244,6 +245,8 @@ const StudentDashboard = () => {
           </div>
         </div>
       </main>
+      
+      <AttendanceChatBot />
     </div>
   );
 };
