@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { MessageCircle, Send, X, Loader2 } from 'lucide-react';
+import { Bot, Send, X, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -80,7 +80,7 @@ const AttendanceChatBot = () => {
           className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-neon-purple z-50 glass-card bg-gradient-primary hover:scale-110 transition-transform duration-300 border-2 border-primary/50"
           size="icon"
         >
-          <MessageCircle className="h-7 w-7" />
+          <Bot className="h-7 w-7" />
         </Button>
       )}
 
@@ -90,7 +90,7 @@ const AttendanceChatBot = () => {
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border/50">
             <div className="flex items-center gap-2">
-              <MessageCircle className="h-5 w-5 text-primary" />
+              <Bot className="h-5 w-5 text-primary" />
               <h3 className="font-heading font-bold">Attendance Assistant</h3>
             </div>
             <Button
