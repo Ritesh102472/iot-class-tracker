@@ -13,11 +13,23 @@ import AttendanceTable from "@/components/AttendanceTable";
 import AddAttendanceForm from "@/components/AddAttendanceForm";
 import { useStudents } from "@/hooks/useStudents";
 import { useAttendance } from "@/hooks/useAttendance";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [isIoTConnected, setIsIoTConnected] = useState(true);
   const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString());
+  const [autoSync, setAutoSync] = useState(true);
+  const [notifications, setNotifications] = useState(true);
   const { toast } = useToast();
   const { students, refetch: refetchStudents } = useStudents();
   const { attendance, refetch: refetchAttendance, addAttendance } = useAttendance();
@@ -68,10 +80,63 @@ const AdminDashboard = () => {
           </div>
           <div className="flex items-center gap-3">
             <IoTStatus isConnected={isIoTConnected} />
-            <Button variant="outline">
-              <Settings className="w-4 h-4 mr-2" />
-              Settings
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Settings
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Admin Settings</DialogTitle>
+                  <DialogDescription>
+                    Configure your dashboard preferences and IoT device settings.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-6 py-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="auto-sync">Auto-Sync Data</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Automatically sync with IoT devices
+                      </p>
+                    </div>
+                    <Switch
+                      id="auto-sync"
+                      checked={autoSync}
+                      onCheckedChange={setAutoSync}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="notifications">Notifications</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Receive alerts for attendance events
+                      </p>
+                    </div>
+                    <Switch
+                      id="notifications"
+                      checked={notifications}
+                      onCheckedChange={setNotifications}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="iot-status">IoT Connection</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Toggle IoT device connection
+                      </p>
+                    </div>
+                    <Switch
+                      id="iot-status"
+                      checked={isIoTConnected}
+                      onCheckedChange={setIsIoTConnected}
+                    />
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
             <Button variant="ghost" onClick={() => navigate("/")}>
               <LogOut className="w-4 h-4 mr-2" />
               Logout
